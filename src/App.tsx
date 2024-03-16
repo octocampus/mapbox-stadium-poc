@@ -21,12 +21,15 @@ const layerStyle: CircleLayer = {
 
 function App() {
   return <Map
+   dragPan={false} 
+   maxZoom={9}
+  minZoom={7}
   initialViewState={{
-    longitude: -122.4,
-    latitude: 37.8,
+    longitude: -4.671,
+    latitude: 32.6,
   }}
   style={{width: 600, height: 400}}
-    mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=rBdTDnsNuDCo2ea9nQ3G"
+    mapStyle="/public/osm_liberty.json"
   >
     <Source id="my-data" type="geojson" data={geojson}>
       <Layer {...layerStyle} />
