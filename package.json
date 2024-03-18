@@ -12,7 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.8",
     "localforage": "^1.10.0",
-    "maplibre-gl": "^4.1.0",
+    "maplibre-gl": "^4.1.1",
     "match-sorter": "^6.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
