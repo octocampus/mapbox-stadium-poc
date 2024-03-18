@@ -35,6 +35,23 @@ export default function SeatPicker() {
         fetchVenue();
     }, []);
 
+    const fetchSeats = async (tribuneId) => {
+        if (!tribuneId) {
+            return;
+        }
+        const {data, error } = await supabaseClient
+            .from('seats')
+            .select('*')
+            .eq('event', eventId)
+            .eq('tribuneId', tribuneId);
+
+        if (data?.length == 0) {
+            return;
+        }
+
+        setFeatures({available_seats:data[0].available_seats,price:data[0].price});
+    }
+
     const handleClick = (ev: MapLayerMouseEvent) => {
 
         if (ev.features?.length == 0) {
@@ -47,11 +64,8 @@ export default function SeatPicker() {
             pitch: 50,
             duration: 3000,
         })
-
-        setFeatures({
-            available_seats: 17,
-            price: "200 DH"
-        });
+        const id = ev.features[0].properties.tribuneId;
+        fetchSeats(id);
     }
 
 
