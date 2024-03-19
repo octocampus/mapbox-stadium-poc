@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import { supabaseClient } from "./createClient";
-import Map, { Layer, MapRef, Source, useMap, MapEvent, MapProvider } from 'react-map-gl/maplibre'
+import Map, { Layer, MapRef, Source, useMap, MapEvent, MapProvider, Popup } from 'react-map-gl/maplibre'
 import { MapLayerEventType, MapLayerMouseEvent } from "maplibre-gl";
 import { MapWheelEvent } from "react-map-gl";
 
@@ -24,6 +24,7 @@ export default function SeatEditor() {
     const [cameraPosition, setCamPos] = useState(camDefault);
 
     const [currTribune, setCurrTribune] = useState(null);
+    const [showPopup,setShowPopup] = useState(false)
 
 
     async function fetchVenue() {
@@ -37,11 +38,12 @@ export default function SeatEditor() {
 
     const handleClick = (ev: MapLayerMouseEvent) => {
         if (ev.features?.length == 0) {
+            !showPopup || setShowPopup(false);
             return;
         }
 
         setCamPos({...cameraPosition,center:[ev.lngLat.lng,ev.lngLat.lat]})
-
+        setShowPopup(true);
         setCurrTribune(ev.features[0].properties.tribuneId)
     }
 
@@ -225,6 +227,16 @@ export default function SeatEditor() {
                             }
                         } />
                     </Source>
+                    {showPopup && (
+                    <Popup longitude={cameraPosition.center[0]} latitude={cameraPosition.center[1]}
+                        anchor="bottom"
+                        closeButton={false}
+                        closeOnMove={false}
+                        closeOnClick={false}
+                        >
+                        price : xxx
+                        seats : XXX
+                    </Popup>)}
                 </Map>
                 <Navigation cameraPosition={cameraPosition} />
                 <Inspector currTribune={currTribune} />

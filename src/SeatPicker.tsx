@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { supabaseClient } from "./createClient";
-import Map, { Layer, MapRef, Source, useMap, MapEvent, MapProvider } from 'react-map-gl/maplibre'
-import { MapLayerEventType, MapLayerMouseEvent } from "maplibre-gl";
-import { MapWheelEvent } from "react-map-gl";
+import Map, { Layer,  Source, useMap,  MapProvider } from 'react-map-gl/maplibre'
+import { MapLayerMouseEvent } from "maplibre-gl";
 
 const camDefault = {
     center: [-121.968438, 37.371627],
@@ -23,6 +22,7 @@ export default function SeatPicker() {
     const [curMap, setCurMap] = useState();
     const [cameraPosition, setCamPos] = useState(camDefault);
 
+
     async function fetchVenue() {
         const { data } = await supabaseClient.from('venues').select('venue_geojson').eq('id', 1);
         setGeoData(data[0].venue_geojson);
@@ -39,7 +39,7 @@ export default function SeatPicker() {
         if (!tribuneId) {
             return;
         }
-        const {data, error } = await supabaseClient
+        const { data, error } = await supabaseClient
             .from('seats')
             .select('*')
             .eq('event', eventId)
@@ -49,7 +49,7 @@ export default function SeatPicker() {
             return;
         }
 
-        setFeatures({available_seats:data[0].available_seats,price:data[0].price});
+        setFeatures({ available_seats: data[0].available_seats, price: data[0].price });
     }
 
     const handleClick = (ev: MapLayerMouseEvent) => {
@@ -93,7 +93,7 @@ export default function SeatPicker() {
                 {features && <div className="flex flex-col dark:text-white">
                     <p className=" inline"><strong className=" font-extrabold">Available Seats : </strong> {features.available_seats}</p>
                     <p className=" inline"><strong className=" font-extrabold">Price : </strong>{features.price}</p>
-                    <a href="#" onClick={()=>{setCamPos(camDefault); setFeatures(undefined)}} className="inline-flex mt-6 items-center w-40 px-3 py-2 text-sm font-medium text-center text-white bg-amber-500 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                    <a href="#" onClick={() => { setCamPos(camDefault); setFeatures(undefined) }} className="inline-flex mt-6 items-center w-40 px-3 py-2 text-sm font-medium text-center text-white bg-amber-500 rounded-lg hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         Go back
                         <svg className=" w-3.5 h-3.5 ms-2" id="2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M1 5h12m0 0L9 1m4 4L9 9" />
@@ -153,9 +153,12 @@ export default function SeatPicker() {
                             }
                         } />
                     </Source>
+                    
                 </Map>
                 <Navigation cameraPosition={cameraPosition} />
                 <Inspector features={currFeatures} />
+                
+
             </MapProvider>
         </>
     )

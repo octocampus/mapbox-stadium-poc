@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Events from "./Events";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import SeatPicker from "./SeatPicker";
