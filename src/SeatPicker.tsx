@@ -24,7 +24,7 @@ export default function SeatPicker() {
     const [cameraPosition, setCamPos] = useState(camDefault);
 
     async function fetchVenue() {
-        const { data } = await supabaseClient.from('venues').select('venue_geojson').eq('id', eventId);
+        const { data } = await supabaseClient.from('venues').select('venue_geojson').eq('id', 1);
         setGeoData(data[0].venue_geojson);
 
     }
