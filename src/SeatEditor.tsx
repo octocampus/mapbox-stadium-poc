@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { supabaseClient } from "./createClient";
-import Map, { Layer, MapRef, Source, useMap, MapEvent, MapProvider, Popup } from 'react-map-gl/maplibre'
-import { MapLayerEventType, MapLayerMouseEvent } from "maplibre-gl";
-import { MapWheelEvent } from "react-map-gl";
+import Map, { Layer, Source, useMap, MapProvider, Popup } from 'react-map-gl/maplibre'
+import { MapLayerMouseEvent } from "maplibre-gl";
 
 const camDefault = {
     center: [-121.968438, 37.371627],
@@ -13,22 +12,22 @@ const camDefault = {
 };
 
 export default function SeatEditor() {
-    const { eventId } = useParams();
-    const [geodata, setGeoData] = useState({
+    const { eventId } = useParams<any>();
+    const [geodata, setGeoData] = useState<any>({
         type: 'FeatureCollection',
         features: [
             { type: 'Feature', geometry: { type: 'Point', coordinates: [-122.4, 37.8] } }
         ]
     });
 
-    const [cameraPosition, setCamPos] = useState(camDefault);
+    const [cameraPosition, setCamPos] = useState<any>(camDefault);
 
-    const [currTribune, setCurrTribune] = useState(null);
-    const [showPopup,setShowPopup] = useState(false)
+    const [currTribune, setCurrTribune] = useState<any>(null);
+    const [showPopup,setShowPopup] = useState<any>(false)
 
 
     async function fetchVenue() {
-        const { data } = await supabaseClient.from('venues').select('venue_geojson').eq('id', 1);
+        const { data } : any= await supabaseClient.from('venues').select('venue_geojson').eq('id', 1);
         setGeoData(data[0].venue_geojson);
     }
 
@@ -44,11 +43,14 @@ export default function SeatEditor() {
 
         setCamPos({...cameraPosition,center:[ev.lngLat.lng,ev.lngLat.lat]})
         setShowPopup(true);
+
+        if(!ev.features)
+            return;
         setCurrTribune(ev.features[0].properties.tribuneId)
     }
 
 
-    function Navigation({ cameraPosition }) {
+    function Navigation({ cameraPosition } :  any) {
         const { currmap } = useMap();
 
         useEffect(() => {
@@ -60,15 +62,15 @@ export default function SeatEditor() {
         )
     }
 
-    function Inspector({ currTribune }) {
-        const [avseats, setAvseats] = useState(null);
-        const [price, setPrice] = useState(null);
+    function Inspector({ currTribune } : any) {
+        const [avseats, setAvseats] = useState<any>(null);
+        const [price, setPrice] = useState<any>(null);
 
         const fetchSeats = async () => {
             if (!currTribune) {
                 return;
             }
-            const {data, error } = await supabaseClient
+            const {data } = await supabaseClient
                 .from('seats')
                 .select('*')
                 .eq('event', eventId)
@@ -77,7 +79,8 @@ export default function SeatEditor() {
             if (data?.length == 0) {
                 return;
             }
-            
+            if(!data)
+                return;
             setAvseats(data[0].available_seats)
             setPrice(data[0].price)
         }
@@ -86,16 +89,16 @@ export default function SeatEditor() {
             fetchSeats()
         }, [])
 
-        const handleSeats = (e) => {
+        const handleSeats = (e :any) => {
             setAvseats(e.target.value);
         }
 
-        const handlePrice = (e) => {
+        const handlePrice = (e:any) => {
             setPrice(e.target.value);
         }
 
 
-        async function insertOrUpdateSeat(eventId, tribuneId, availableSeats, price) {
+        async function insertOrUpdateSeat(eventId:any, tribuneId:any, availableSeats:any, price:any) {
             try {
                 // Check if a row with the specified eventId and tribuneId exists
                 const { data: existingSeatData, error: existingSeatError } = await supabaseClient
@@ -135,7 +138,7 @@ export default function SeatEditor() {
 
                 console.log('Inserted seat data:', insertedSeatData);
                 return insertedSeatData;
-            } catch (error) {
+            } catch (error : any) {
                 console.error('Error inserting or updating seat:', error.message);
                 return null;
             }
@@ -145,9 +148,9 @@ export default function SeatEditor() {
         const handleSave = async () => {
             try {
                 // Call insertOrUpdateSeat function to insert or update seat data
-                const seatData = await insertOrUpdateSeat(eventId, currTribune, avseats, price);
+                await insertOrUpdateSeat(eventId, currTribune, avseats, price);
                 
-            } catch (error) {
+            } catch (error : any) {
                 // Handle error
                 console.error('Error saving seat data:', error.message);
             }

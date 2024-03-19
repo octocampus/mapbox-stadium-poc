@@ -1,5 +1,5 @@
 
-export default function Rightpanel({data}) {
+export default function Rightpanel({data}:any) {
 
     return (
         <div className=" absolute z-10 right-10 top-10 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

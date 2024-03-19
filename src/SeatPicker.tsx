@@ -12,40 +12,41 @@ const camDefault = {
 };
 
 export default function SeatPicker() {
-    const { eventId } = useParams();
-    const [geodata, setGeoData] = useState({
+    const { eventId } = useParams<any>();
+    const [geodata, setGeoData] = useState<any>({
         type: 'FeatureCollection',
         features: [
             { type: 'Feature', geometry: { type: 'Point', coordinates: [-122.4, 37.8] } }
         ]
     });
-    const [curMap, setCurMap] = useState();
-    const [cameraPosition, setCamPos] = useState(camDefault);
+    const [cameraPosition, setCamPos] = useState<any>(camDefault);
 
 
     async function fetchVenue() {
         const { data } = await supabaseClient.from('venues').select('venue_geojson').eq('id', 1);
+        if(!data)
+            return;
         setGeoData(data[0].venue_geojson);
 
     }
 
-    const [currFeatures, setFeatures] = useState();
+    const [currFeatures, setFeatures] = useState<any>();
 
     useEffect(() => {
         fetchVenue();
     }, []);
 
-    const fetchSeats = async (tribuneId) => {
+    const fetchSeats = async (tribuneId :  any) => {
         if (!tribuneId) {
             return;
         }
-        const { data, error } = await supabaseClient
+        const { data } = await supabaseClient
             .from('seats')
             .select('*')
             .eq('event', eventId)
             .eq('tribuneId', tribuneId);
 
-        if (data?.length == 0) {
+        if (!data) {
             return;
         }
 
@@ -64,12 +65,14 @@ export default function SeatPicker() {
             pitch: 50,
             duration: 3000,
         })
+        if(!ev.features)
+            return;
         const id = ev.features[0].properties.tribuneId;
         fetchSeats(id);
     }
 
 
-    function Navigation({ cameraPosition }) {
+    function Navigation({ cameraPosition } : any) {
         const { currmap } = useMap();
 
         useEffect(() => {
@@ -81,7 +84,7 @@ export default function SeatPicker() {
         )
     }
 
-    function Inspector({ features }) {
+    function Inspector({ features } : any) {
 
         return (
 

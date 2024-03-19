@@ -3,23 +3,25 @@ import { supabaseClient } from "./createClient";
 
 
 export default function EventFormModal() {
-    const modalRef = useRef(null);
+    const modalRef = useRef<HTMLDivElement>(null);
     const [eventName, setEventName] = useState('');
     const [eventDate, setEventDate] = useState('');
 
     const handleClick = () => {
-        modalRef.current?.classList.toggle("hidden");
-    }
-
+    
+        if (modalRef.current) {
+            modalRef.current.classList.toggle("hidden");
+        }
+    };
     const handleClose = () => {
         modalRef.current?.classList.add("hidden");
-    }
+    };
 
-    const handleEventNameChange = (e) => {
+    const handleEventNameChange = (e:any) => {
         setEventName(e.target.value);
     }
 
-    const handleEventDateChange = (e) => {
+    const handleEventDateChange = (e:any) => {
         setEventDate(e.target.value);
     }
 
@@ -35,15 +37,15 @@ export default function EventFormModal() {
             }
             console.log('Event inserted successfully:', data);
             return data;
-        } catch (error) {
+        } catch (error : any) {
             console.error('Error inserting event:', error.message);
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
 
-        const event = createEvent();
+        createEvent();
         
         
         setEventName('');

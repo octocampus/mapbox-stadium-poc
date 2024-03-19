@@ -5,10 +5,10 @@ import EventFormModal from "./EventFormModal";
 
 export default function Events(){
 
-    const [events,setEvents] = useState([]);
+    const [events,setEvents] = useState<any>([]);
 	
 	async function fetchEvents() {
-		const {data} = await supabaseClient.from('events').select('*');
+		const {data} : any= await supabaseClient.from('events').select('*');
 		setEvents(data);
 	}
 
@@ -38,7 +38,7 @@ export default function Events(){
 					</thead>
 					<tbody>
 						{
-							events.map((ev,index)=>{
+							events.map((ev : any,index : any)=>{
 								return (
 									<tr key={index} className="bg-white dark:bg-gray-800">
 							<th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
