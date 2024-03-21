@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { supabaseClient } from "./createClient";
+import { supabaseClient } from "../createClient";
 
 
 export default function EventFormModal() {

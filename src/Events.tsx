@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabaseClient } from "./createClient";
 import { Link } from "react-router-dom";
-import EventFormModal from "./EventFormModal";
+import EventFormModal from "./components/EventFormModal";
 
 export default function Events(){
 
