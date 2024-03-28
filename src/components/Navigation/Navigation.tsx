@@ -1,15 +1,14 @@
-import {useMap} from "react-map-gl";
+import {useMap} from "react-map-gl/maplibre";
 import {useEffect} from "react";
-import {FlyToOptions} from "maplibre-gl";
 
-export function Navigation({ cameraPosition } : any) {
+export function Navigation({ cameraPosition } : { cameraPosition:any}) {
     const { currmap } = useMap();
 
     useEffect(() => {
         currmap?.flyTo(cameraPosition);
-    }, [])
+    }, [cameraPosition, currmap])
 
     return (
-        <h1 className="hidden" >Hack to be able to fly to a position</h1>
+        <h1 className="hidden" >fly to a position</h1>
     )
 }
