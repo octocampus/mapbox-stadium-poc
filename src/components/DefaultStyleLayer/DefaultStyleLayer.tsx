@@ -3,8 +3,6 @@ import {Layer} from "react-map-gl/maplibre";
 export function DefaultStyleLayer() {
     return (
         <div>
-
-
             <Layer
                 {...{
                     id: 'seat',

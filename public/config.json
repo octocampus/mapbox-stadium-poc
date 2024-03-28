@@ -1,0 +1,28 @@
+{
+  "specifications": [
+    {
+      "classList": ["stadium"],
+      "properties": {
+        "class": "stadium"
+      }
+    },
+    {
+      "classList": ["field"],
+      "properties": {
+        "class": "field"
+      }
+    },
+    {
+      "classList": ["grandstand1", "grandstand2", "grandstand3", "grandstand4"],
+      "properties": {
+        "class": "grandstand"
+      }
+    },
+    {
+      "classList": ["seat"],
+      "properties": {
+        "class": "seat"
+      }
+    }
+  ]
+}
