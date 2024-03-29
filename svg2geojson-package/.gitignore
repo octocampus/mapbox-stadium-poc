@@ -1,0 +1,6 @@
+node_modules/
+.idea
+svg_examples
+dist
+src/test
+out.json
